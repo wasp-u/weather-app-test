@@ -3,6 +3,7 @@ import { weatherApi } from '../../api/weatherApi'
 
 const initialState = {
     weatherData: [] as WeatherForCity[],
+    weatherDataForCity: null as WeatherForCity | null,
     forecastWeather: [] as any[],
     error: null as string | null,
 }
@@ -73,6 +74,9 @@ const appSlice = createSlice({
                 state.weatherData = [...state.weatherData, action.payload]
             }
         },
+        setWeatherDataForCity(state, action: PayloadAction<WeatherForCity | null>) {
+            state.weatherDataForCity = action.payload
+        },
         setForecastWeather(state, action: PayloadAction<any>) {
             state.forecastWeather = action.payload
         },
@@ -93,8 +97,14 @@ const appSlice = createSlice({
     },
 })
 
-export const { setWeatherData, deleteCity, setError, updateCityWeather, setForecastWeather } =
-    appSlice.actions
+export const {
+    setWeatherData,
+    deleteCity,
+    setError,
+    updateCityWeather,
+    setForecastWeather,
+    setWeatherDataForCity,
+} = appSlice.actions
 
 export const getWeatherDataByCityName = (cityName: string) => async (dispatch: any) => {
     const res = await weatherApi.getWeatherByCityName(cityName)
@@ -115,6 +125,11 @@ export const getForecastWeather = (cityName: string) => async (dispatch: any) =>
     const res = await weatherApi.getForecastWeather(cityName)
     const data = await res.json()
     dispatch(setForecastWeather(data.list))
+}
+export const getWeatherDataForCity = (cityName: string) => async (dispatch: any) => {
+    const res = await weatherApi.getWeatherByCityName(cityName)
+    const data = await res.json()
+    dispatch(setWeatherDataForCity(data))
 }
 
 export default appSlice.reducer

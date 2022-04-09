@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     getForecastWeather,
     getWeatherDataByCityName,
+    getWeatherDataForCity,
     setForecastWeather,
+    setWeatherDataForCity,
     WeatherForCity,
 } from '../store/slices/appSlice'
-import { Box, Container, Grid, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Container, Grid, Stack, Typography } from '@mui/material'
 import { Header } from '../components/Header/Header'
 import { CitiesList } from '../components/CitiesList/CitiesList'
 import { useParams } from 'react-router-dom'
@@ -17,50 +19,72 @@ import { TemperatureBlock } from '../components/TemperatureBlock/TemperatureBloc
 export const CityPage = () => {
     const params = useParams()
     const dispatch = useDispatch()
-    const currentCity = useSelector((state: RootStateType) =>
-        state.app.weatherData.find(city => city.name === params.cityName)
-    ) as WeatherForCity
+    const currentCity = useSelector((state: RootStateType) => state.app.weatherDataForCity)
+    //     useSelector((state: RootStateType) =>
+    //     state.app.weatherData.find(city => city.name === params.cityName)
+    // ) as WeatherForCity
     const forecastWeather = useSelector((state: RootStateType) => state.app.forecastWeather)
 
-    const currentTime = new Date(currentCity.dt * 1000).toDateString()
-    const sunriseTime = new Date(currentCity.sys.sunrise * 1000).toLocaleTimeString()
-    const sunsetTime = new Date(currentCity.sys.sunset * 1000).toLocaleTimeString()
+    const [isLoading, setIsLoading] = useState(false)
+    const getWeather = async () => {
+        setIsLoading(true)
+        await dispatch(getForecastWeather(params.cityName as string))
+        await dispatch(getWeatherDataForCity(params.cityName as string))
+        setIsLoading(false)
+    }
 
     useEffect(() => {
-        dispatch(getForecastWeather(currentCity.name))
+        getWeather()
         return () => {
             dispatch(setForecastWeather([]))
+            dispatch(setWeatherDataForCity(null))
         }
     }, [])
 
-    return (
-        <Box sx={{ height: '100vh' }}>
-            <Container maxWidth='xl'>
-                <Grid container spacing={4} alignItems={'center'}>
-                    <Grid item>
-                        <Typography variant={'h1'}>{currentCity.name}</Typography>
+    if (currentCity) {
+        const currentTime = new Date(currentCity.dt * 1000).toDateString()
+        const sunriseTime = new Date(currentCity.sys.sunrise * 1000).toLocaleTimeString()
+        const sunsetTime = new Date(currentCity.sys.sunset * 1000).toLocaleTimeString()
+        return (
+            <Box sx={{ height: '100vh' }}>
+                <Container maxWidth='xl'>
+                    <Grid container spacing={4} alignItems={'center'}>
+                        <Grid item>
+                            <Typography variant={'h1'}>{currentCity.name}</Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography color={'info.dark'} variant={'h3'}>
+                                {currentTime}
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Typography color={'info.dark'} variant={'h3'}>
-                            {currentTime}
-                        </Typography>
+                    <Typography variant={'h4'}>{currentCity.weather[0].description}</Typography>
+                    <Grid container spacing={2} my={2}>
+                        <InfoField title={'Temperature'} value={`${currentCity.main.temp}°C`} />
+                        <InfoField
+                            title={'Feels like'}
+                            value={`${currentCity.main.feels_like}°C`}
+                        />
+                        <InfoField title={'Max'} value={`${currentCity.main.temp_max}°C`} />
+                        <InfoField title={'Min'} value={`${currentCity.main.temp_min}°C`} />
+                        <InfoField title={'Pressure'} value={`${currentCity.main.pressure}hPa`} />
+                        <InfoField title={'Humidity'} value={`${currentCity.main.humidity}%`} />
+                        <InfoField title={'Visibility'} value={`${currentCity.visibility}m`} />
+                        <InfoField title={'Wind speed'} value={`${currentCity.wind.speed}m/s`} />
+                        <InfoField title={'Sunrise'} value={sunriseTime} />
+                        <InfoField title={'Sunsets'} value={sunsetTime} />
                     </Grid>
-                </Grid>
-                <Typography variant={'h4'}>{currentCity.weather[0].description}</Typography>
-                <Grid container spacing={2} my={2}>
-                    <InfoField title={'Temperature'} value={`${currentCity.main.temp}°C`} />
-                    <InfoField title={'Feels like'} value={`${currentCity.main.feels_like}°C`} />
-                    <InfoField title={'Max'} value={`${currentCity.main.temp_max}°C`} />
-                    <InfoField title={'Min'} value={`${currentCity.main.temp_min}°C`} />
-                    <InfoField title={'Pressure'} value={`${currentCity.main.pressure}hPa`} />
-                    <InfoField title={'Humidity'} value={`${currentCity.main.humidity}%`} />
-                    <InfoField title={'Visibility'} value={`${currentCity.visibility}m`} />
-                    <InfoField title={'Wind speed'} value={`${currentCity.wind.speed}m/s`} />
-                    <InfoField title={'Sunrise'} value={sunriseTime} />
-                    <InfoField title={'Sunsets'} value={sunsetTime} />
-                </Grid>
-                {forecastWeather.length > 0 && <TemperatureBlock weatherList={forecastWeather} />}
-            </Container>
-        </Box>
-    )
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : (
+                        forecastWeather.length > 0 && (
+                            <TemperatureBlock weatherList={forecastWeather} />
+                        )
+                    )}
+                </Container>
+            </Box>
+        )
+    } else {
+        return <CircularProgress />
+    }
 }

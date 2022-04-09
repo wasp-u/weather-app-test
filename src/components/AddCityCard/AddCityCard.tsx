@@ -1,5 +1,5 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import { Box, Button, Card, CardActions, CardContent, IconButton, Typography } from '@mui/material'
+import { Box, Card, CardContent, IconButton } from '@mui/material'
 
 type Props = {
     addCityHandler: () => void
