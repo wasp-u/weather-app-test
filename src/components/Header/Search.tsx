@@ -38,6 +38,7 @@ export const Search: React.FC<SearchProps> = ({ isFocus, onSearch }) => {
             size='small'
             value={searchedValue}
             onChange={e => setSearchValue(e.target.value)}
+            data-testid='search-element'
             InputProps={{
                 onKeyDown: onEnterKeyClick,
                 endAdornment: (
@@ -47,7 +48,10 @@ export const Search: React.FC<SearchProps> = ({ isFocus, onSearch }) => {
                                 <Close />
                             </IconButton>
                         )}
-                        <IconButton disableRipple onClick={searchHandle}>
+                        <IconButton
+                            data-testid='onSearch-button'
+                            disableRipple
+                            onClick={searchHandle}>
                             <SearchOutlined />
                         </IconButton>
                     </InputAdornment>

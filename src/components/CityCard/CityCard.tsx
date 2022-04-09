@@ -71,7 +71,11 @@ export const CityCard: React.FC<Props> = ({ city, deleteHandler, refreshHandler 
                     <Button size='small' onClick={() => refreshHandler(city.name)}>
                         Refresh
                     </Button>
-                    <Button size='small' color={'error'} onClick={() => deleteHandler(city.id)}>
+                    <Button
+                        data-testid='delete-button'
+                        size='small'
+                        color={'error'}
+                        onClick={() => deleteHandler(city.id)}>
                         Delete
                     </Button>
                 </CardActions>

@@ -34,7 +34,9 @@ export const CitiesList: React.FC<Props> = ({ addCityHandler }) => {
     }, [cities])
 
     useEffect(() => {
-        localCities.length > 0 && localCities.map(c => dispatch(getWeatherDataByCityName(c)))
+        localCities &&
+            localCities.length > 0 &&
+            localCities.map(c => dispatch(getWeatherDataByCityName(c)))
     }, [])
 
     return (

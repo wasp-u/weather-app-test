@@ -67,12 +67,8 @@ export const CityPage = () => {
                         <InfoField title={'Sunrise'} value={sunriseTime} />
                         <InfoField title={'Sunsets'} value={sunsetTime} />
                     </Grid>
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        forecastWeather.length > 0 && (
-                            <TemperatureBlock weatherList={forecastWeather} />
-                        )
+                    {forecastWeather.length > 0 && (
+                        <TemperatureBlock weatherList={forecastWeather} />
                     )}
                 </Container>
             </Box>
