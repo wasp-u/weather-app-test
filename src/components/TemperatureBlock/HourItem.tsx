@@ -16,6 +16,7 @@ export const HourItem: React.FC<Props> = ({ temp, time }) => {
                 display: 'flex',
                 justifyContent: 'center',
                 width: 150,
+                minWidth: 50,
                 height: 250,
             }}>
             <Box
