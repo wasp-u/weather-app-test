@@ -20,9 +20,6 @@ export const CityPage = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const currentCity = useSelector((state: RootStateType) => state.app.weatherDataForCity)
-    //     useSelector((state: RootStateType) =>
-    //     state.app.weatherData.find(city => city.name === params.cityName)
-    // ) as WeatherForCity
     const forecastWeather = useSelector((state: RootStateType) => state.app.forecastWeather)
 
     const [isLoading, setIsLoading] = useState(false)
