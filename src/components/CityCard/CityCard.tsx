@@ -23,10 +23,10 @@ export const CityCard: React.FC<Props> = ({ city, deleteHandler, refreshHandler 
     let navigate = useNavigate()
 
     return (
-        <Grid item xs={3}>
+        <Grid item xs>
             <Card
                 sx={{
-                    width: '100%',
+                    minWidth: '350px',
                     height: '100%',
                     '&:hover': {
                         cursor: 'pointer',
@@ -58,7 +58,7 @@ export const CityCard: React.FC<Props> = ({ city, deleteHandler, refreshHandler 
                         <Grid item xs>
                             <Chip label={`Pressure: ${city.main.pressure}hPa`} />
                         </Grid>
-                        <Grid item>
+                        <Grid item xs>
                             <Chip color={'warning'} label={`Max: ${city.main.temp_max}°C`} />
                         </Grid>
                         <Grid item xs>

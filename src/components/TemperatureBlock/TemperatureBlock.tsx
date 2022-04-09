@@ -12,7 +12,7 @@ export const TemperatureBlock: React.FC<Props> = ({ weatherList }) => {
                 bgcolor: 'action.hover',
                 borderRadius: 2,
             }}>
-            <Stack direction={'row'} py={2} px={5}>
+            <Stack direction={'row'} py={2} px={5} overflow={'auto'}>
                 {weatherList.map(item => (
                     <HourItem key={item.dt} temp={item.main.temp} time={item.dt} />
                 ))}

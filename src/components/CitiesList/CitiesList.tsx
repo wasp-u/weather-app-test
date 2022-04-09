@@ -48,7 +48,7 @@ export const CitiesList: React.FC<Props> = ({ addCityHandler }) => {
                         refreshHandler={refreshHandler}
                     />
                 ))}
-            <Grid item xs={3}>
+            <Grid item xs minWidth={'350px'}>
                 <AddCityCard addCityHandler={addCityHandler} />
             </Grid>
         </Grid>
