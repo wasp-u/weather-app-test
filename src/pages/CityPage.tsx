@@ -2,15 +2,11 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     getForecastWeather,
-    getWeatherDataByCityName,
     getWeatherDataForCity,
     setForecastWeather,
     setWeatherDataForCity,
-    WeatherForCity,
 } from '../store/slices/appSlice'
 import { Box, CircularProgress, Container, Grid, Stack, Typography } from '@mui/material'
-import { Header } from '../components/Header/Header'
-import { CitiesList } from '../components/CitiesList/CitiesList'
 import { useParams } from 'react-router-dom'
 import { RootStateType } from '../store'
 import { InfoField } from '../components/InfoField/InfoField'

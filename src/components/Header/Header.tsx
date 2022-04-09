@@ -1,7 +1,5 @@
 import { Search } from './Search'
-import { useDispatch } from 'react-redux'
-import { getWeatherDataByCityName } from '../../store/slices/appSlice'
-import { Box, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 
 type Props = {
     isSearchFocus: boolean
